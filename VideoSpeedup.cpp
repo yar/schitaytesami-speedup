@@ -350,7 +350,7 @@ struct Param{
 
 int main(int argc, char * argv[])
 {
-	Param params;
+	::Param params;
 
 	int n = 5;
 
