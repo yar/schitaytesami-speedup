@@ -257,8 +257,10 @@ void VideoSpeedup::SpeedupVideo(const string& dir, const string& prefix, float c
 				continue;
 
 
-			blur(frame, blurStrong, Size(int(frame.cols/60),int(frame.cols/60)));
-			blur(frame, blurWeak, Size(int(frame.cols/120),int(frame.cols/120)));
+      // blur(frame, blurStrong, Size(int(frame.cols/60),int(frame.cols/60)));
+      // blur(frame, blurWeak, Size(int(frame.cols/120),int(frame.cols/120)));
+      blurStrong = frame.clone();
+      blurWeak = frame.clone();
 
 			int msec = (i*1000)/inrate+startTime*1000;
 			int hours = msec/(3600*1000);
