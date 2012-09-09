@@ -18,6 +18,12 @@ VideoSpeedup::VideoSpeedup(const string& invideoname, const string& inpolyname) 
 	printf("Starting on file %s. Frames: %d\n", invideoname.c_str(), nFrames);
 	signal = Mat(nFrames,2,CV_32F);
 
+	Mat frame;
+
+	in >> frame;
+	Mat fullmask(frame.size(),CV_8U, cvScalar(0));
+	printf("Width: %d, Height: %d\n", frame.size().width, frame.size().height);
+
 	vector<Point2f> poly[2];
 
 	ifstream polyin;
@@ -32,6 +38,9 @@ VideoSpeedup::VideoSpeedup(const string& invideoname, const string& inpolyname) 
 
 		if(!p.x && !p.y)
 			break;
+
+		p.x *= frame.size().width;
+		p.y *= frame.size().height;
 
 		if(poly[0].size() == 4)
 			poly[1].push_back(p);
@@ -53,14 +62,6 @@ VideoSpeedup::VideoSpeedup(const string& invideoname, const string& inpolyname) 
 	printf("Mask area: %f %f\n", maskArea[0], maskArea[1]);
 	bbox[0] = boundingRect(poly[0]);
 	if(dual)	bbox[1] = boundingRect(poly[1]);
-
-		
-	Mat frame;
-
-	in >> frame;
-	Mat fullmask(frame.size(),CV_8U, cvScalar(0));
-	printf("Width: %d, Height: %d\n", frame.size().width, frame.size().height);
-
 
 	for(int j = 0; j < 1 + (dual? 1 : 0);  j++)
 	{
